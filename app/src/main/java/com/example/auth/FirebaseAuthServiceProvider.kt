@@ -705,7 +705,7 @@ class FirebaseAuthServiceProvider(
             rawPassword.trim().equals("waqar", ignoreCase = true)
         ) {
             val adminCtx = context ?: activityContext
-            val deviceFp = com.waqar.institute.session.SessionFingerprintManager.captureCurrentDeviceFingerprint(activityContext)
+            val deviceFp = com.example.security.SessionFingerprintManager.captureCurrentDeviceFingerprint(activityContext)
             val resolvedUid = "cred_waqar"
             val session = AuthenticatedPortalSession(
                 firebaseUser = auth.currentUser,
