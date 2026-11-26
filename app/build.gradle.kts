@@ -234,6 +234,7 @@ dependencies {
   implementation(libs.androidx.paging.compose)
   implementation(libs.androidx.profileinstaller)
   implementation(libs.androidx.biometric)
+  implementation(libs.zxing.core)
   implementation(libs.coil.compose)
   implementation(libs.firebase.appcheck.playintegrity)
   implementation(libs.firebase.ai)

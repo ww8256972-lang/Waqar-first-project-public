@@ -23,6 +23,14 @@
       {
         "source": "/portal**",
         "destination": "/search.html"
+      },
+      {
+        "source": "/download**",
+        "destination": "/download.html"
+      },
+      {
+        "source": "/app-info**",
+        "destination": "/app-info.html"
       }
     ]
   },

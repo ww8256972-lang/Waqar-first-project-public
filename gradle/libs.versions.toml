@@ -152,6 +152,7 @@ lsparanoid-core = { group = "org.lsposed.lsparanoid", name = "core", version.ref
 agora-full-sdk = { group = "io.agora.rtc", name = "full-sdk", version.ref = "agoraRtc" }
 tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tensorflowLite" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version = "1.2.0-alpha05" }
+zxing-core = { group = "com.google.zxing", name = "core", version = "3.5.3" }
 dev-chrisbanes-haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
 argon2kt = { group = "com.lambdapioneer.argon2kt", name = "argon2kt", version.ref = "argon2kt" }
 nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusJoseJwt" }

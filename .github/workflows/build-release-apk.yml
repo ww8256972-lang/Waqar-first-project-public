@@ -107,3 +107,19 @@ jobs:
           path: app/build/outputs/apk/release/*.apk
           retention-days: 30
           if-no-files-found: error
+
+      - name: Stage Release APK for Firebase Hosting
+        run: |
+          mkdir -p public/apk
+          RELEASE_APK="$(find app/build/outputs/apk/release -name '*.apk' | head -n 1)"
+          cp "$RELEASE_APK" public/apk/app-release.apk
+          ls -lh public/apk/app-release.apk
+
+      - name: Deploy Hosting (APK + verify pages) to Firebase
+        if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: default
