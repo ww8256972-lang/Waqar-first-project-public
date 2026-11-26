@@ -23,7 +23,7 @@ jobs:
     steps:
       # 1. Checkout repository
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 1.1 Static Guardrails Gate (Phase 1 Gate per Master PRD Section 8.3)
       - name: Gate 1 - Static Guardrails & Zero-Violation Verifier
