@@ -14,8 +14,10 @@ class VolatileFileJail(private val baseCacheDir: File) {
     val jailDir: File = File(baseCacheDir, "sandbox_jail/$jailId").apply { mkdirs() }
 
     fun resolveSafeFile(relativeName: String): File {
+        val rootPath = jailDir.canonicalFile.toPath().normalize()
         val target = File(jailDir, relativeName).canonicalFile
-        if (!target.path.startsWith(jailDir.canonicalPath)) {
+        val targetPath = target.toPath().normalize()
+        if (!targetPath.startsWith(rootPath) || targetPath == rootPath) {
             throw SecurityException("PATH_TRAVERSAL_DETECTED: Attempted jail escape outside $jailDir")
         }
         return target
@@ -23,6 +25,14 @@ class VolatileFileJail(private val baseCacheDir: File) {
 
     fun purgeJail() {
         if (jailDir.exists()) {
+            jailDir.walkBottomUp().forEach { file ->
+                if (file.isFile) {
+                    runCatching {
+                        val len = file.length().coerceAtMost(1024L * 1024L).toInt()
+                        if (len > 0) file.writeBytes(ByteArray(len))
+                    }
+                }
+            }
             jailDir.deleteRecursively()
         }
     }

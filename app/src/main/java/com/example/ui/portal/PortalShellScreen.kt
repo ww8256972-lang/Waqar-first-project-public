@@ -261,16 +261,8 @@ fun PortalShellScreen(
     }
 
     if (activeRole == PortalRole.ADMIN) {
-        val adminUsername = state.userProfile?.username?.trim()?.ifBlank { "waqar" } ?: "waqar"
-        val adminDisplayName = state.userProfile?.displayName?.ifBlank { "Waqar Khan (Admin)" } ?: "Waqar Khan (Admin)"
-
-        com.waqar.institute.biometric.AdminBiometricGateOverlay(
-            adminUsername = adminUsername,
-            adminDisplayName = adminDisplayName,
-            onSignOutRequested = { viewModel.signOut() }
-        ) {
-            PortalShellBody(state, viewModel, externalDrawerState)
-        }
+        // Admin username + password login opens the dashboard directly (no face biometric gate).
+        PortalShellBody(state, viewModel, externalDrawerState)
         return
     }
 

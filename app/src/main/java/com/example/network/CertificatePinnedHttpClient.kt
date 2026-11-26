@@ -21,7 +21,7 @@ object CertificatePinnedHttpClient {
         val ctInterceptor = certificateTransparencyInterceptor {
             +"*.googleapis.com"
             +"*.firebaseio.com"
-            failOnError = false
+            failOnError = true
         }
 
         val baseBuilder = if (context != null) {

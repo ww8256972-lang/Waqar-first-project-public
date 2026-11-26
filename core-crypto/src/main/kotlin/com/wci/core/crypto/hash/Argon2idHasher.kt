@@ -16,10 +16,11 @@ import javax.crypto.spec.PBEKeySpec
  */
 object Argon2idHasher {
 
-    private const val PBKDF2_ROUNDS = 600000
-    private const val ARGON2_MEM_KIB = 65536 // 64 MiB
-    private const val ARGON2_ITERATIONS = 3
-    private const val ARGON2_PARALLELISM = 4
+    // OWASP-aligned mobile parameters safe for 2-3 GB budget devices (prevents UI/OOM stalls)
+    private const val PBKDF2_ROUNDS = 120_000
+    private const val ARGON2_MEM_KIB = 19_456 // 19 MiB OWASP baseline
+    private const val ARGON2_ITERATIONS = 2
+    private const val ARGON2_PARALLELISM = 1
     private const val KEY_LENGTH_BITS = 256
     private const val SALT_LENGTH_BYTES = 16
 
